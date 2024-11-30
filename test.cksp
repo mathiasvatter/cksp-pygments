@@ -1,0 +1,13 @@
+
+on init
+    declare x: int := 42
+	test(x)
+end on
+
+function test(x: int)
+    if (x > 10)
+        return true
+    else
+        return false
+    end if
+end function
