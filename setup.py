@@ -9,4 +9,14 @@ setup(
             'cksp = pygments_lexers.cksp_lexer:CKSPLexer',
         ],
     },
+    install_requires=[
+        'Pygments>=2.0',
+    ],
+    author="Mathias Vatter",
+    description="A Pygments Lexer for CKSP",
+    url="https://github.com/mathiasvatter/cksp-pygments",
+    classifiers=[
+        "Programming Language :: CKSP",
+        "Operating System :: OS Independent",
+    ],
 )

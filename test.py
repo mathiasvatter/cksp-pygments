@@ -16,7 +16,23 @@ struct List
     end function
 end struct
 
-define GLOBAL_VAR := 42
+struct Note
+	declare pitch: int // maybe default value := 0
+	declare velocity: int
+	declare samplestart: int
+
+	function __init__(self, p: int, v: int, s: int)
+		self.pitch := p
+		self.velocity := v
+		self.samplestart := s
+	end function
+
+	function play(self): int
+		return play_note(self.pitch, self.velocity, self.samplestart, 0)
+	end function
+end struct
+
+define GLOBAL_VAR(x) := 42 + x
 
 on init
     declare ui_slider sli_test(0,1000)
