@@ -1,10 +1,10 @@
-from pygments.lexer import RegexLexer, bygroups, include
+from pygments.lexer import RegexLexer, bygroups, include, words, default
 from pygments.token import Text, Keyword, Name, String, Number, Operator, Comment, Whitespace, Punctuation
 import os
 
 class CKSPLexer(RegexLexer):
     name = 'CKSP'
-    aliases = ['cksp']
+    aliases = ['cksp', 'ksp']
     filenames = ['*.cksp', '*.ksp', '*.txt']
 
     var_name = r'[0-9#]*[a-zA-Z_#]+[0-9a-zA-Z_#.]*'
@@ -75,8 +75,9 @@ class CKSPLexer(RegexLexer):
 
             # Comments
             (r'//.*$', Comment.Single),
-            (r'/\*.*?\*/', Comment.Multiline),
-            (r'{.*?}', Comment.Multiline),
+            (r'/\*', Comment.Multiline, 'nested_comment'),  # Start of /* ... */ multiline comments
+            (r'\{', Comment.Multiline, 'brace_comment'),    # Start of { ... } multiline comments
+    
 
             # Numbers
             (r'\b0x[0-9a-fA-F]+\b', Number.Hex),
@@ -92,7 +93,7 @@ class CKSPLexer(RegexLexer):
              r'select|case|end\s+select|while|end\s+while)\b', Keyword.Constant),
 
             # Import
-            (r'\b(import)(\s+)', bygroups(Keyword, Text)),
+            (r'\b(import)(\s+)', bygroups(Keyword.Preproc, Text)),
 
             # Operators
             (r'(-|\+|\/|\*|\*\*|>>|<<|=|<|>|<=|>=|\#|->)', Operator),
@@ -102,14 +103,14 @@ class CKSPLexer(RegexLexer):
             (r'\b(true|false|nil)\b', Name.Constant),
 
             # Preprocessor Directives and Defines
-            (r'\b(START_INC|END_INC|SET_CONDITION|RESET_CONDITION|#pragma|import)\b', Keyword.Preproc),
+            (r'\b(START_INC|END_INC|SET_CONDITION|RESET_CONDITION)\b', Keyword.Preproc),
+            (r'\b(\#pragma)\b', Keyword.Preproc, 'preproc_builtins'),  
 
             include('builtins'),
             include('widgets'),
 
             # Callbacks
-            (r'\bon\s+(async_complete|controller|init|listener|note|persistence_changed|'
-             r'pgs_changed|poly_at|release|rpn|nrpn|ui_control|ui_update|midi_in)\b', Keyword),
+            (r'\b(on)(\s+)', bygroups(Keyword, Text), 'callbackname'),
             (r'\bend\s+on\b', Keyword),
 
             # Function Call
@@ -148,10 +149,10 @@ class CKSPLexer(RegexLexer):
             (r'[,;:]', Text),
             (r'[\s+]', Whitespace),
             # Parentheses
-            (r'\(', Punctuation, '#push'),  # Betritt den aktuellen State erneut
-            (r'\)', Punctuation, '#pop'),  # Verlässt den aktuellen State
-            (r'\[', Punctuation, '#push'),  # Betritt den aktuellen State erneut
-            (r'\]', Punctuation, '#pop'),  # Verlässt den aktuellen State
+            (r'\(', Punctuation, '#push'),
+            (r'\)', Punctuation, '#pop'),
+            (r'\[', Punctuation, '#push'),
+            (r'\]', Punctuation, '#pop'),
 
         ],
         
@@ -165,16 +166,62 @@ class CKSPLexer(RegexLexer):
         ],
 
         'funcname': [
+            include('magicfuncs'),
             (var_name, Name.Function, '#pop'),
+            default('#pop'),
+        ],
+
+        'callbackname': [
+            (words(('async_complete', 'controller', 'init', 'listener', 'note', 'persistence_changed',
+            'pgs_changed', 'poly_at', 'release', 'rpn', 'nrpn', 'ui_control', 'ui_update', 'midi_in'),
+            suffix=r'\b'), Keyword.Callback, '#pop'),
         ],
 
         'builtins': [
-            (r'\b(' + '|'.join(builtin_funcs) + r')\b', Name.Builtin),
-            (r'\b(' + '|'.join(builtin_vars) + r')\b', Name.Builtin),
+            (words(builtin_funcs, suffix=r'\b'), Name.Builtin),
+            (words(builtin_vars, suffix=r'\b'), Name.Builtin),
+        ],
+
+        'preproc_builtins': [
+            (words(('output_path'), suffix=r'\b'), Name.Preproc, '#pop'),
         ],
 
         'widgets': [
             (r'\b(' + '|'.join(builtin_widgets) + r')(\s+)('+var_name+r')\b', 
              bygroups(Keyword.Builtin, Text, Name.Variable)),
-        ]
+        ],
+
+        'brace_comment': [
+            (r'\{', Comment.Multiline, '#push'),  # Nested {
+            (r'\}', Comment.Multiline, '#pop'),  # End of current block
+            (r'/\*', Comment.Multiline, 'nested_comment'),  # Start of /* ... */ multiline comments
+            (r'[^{}}]+', Comment.Multiline),      # Content within the comment
+        ],
+
+        'nested_comment': [
+            (r'/\*', Comment.Multiline, '#push'),  # Nested /* ... */
+            (r'\*/', Comment.Multiline, '#pop'),  # End of current block
+            (r'\{', Comment.Multiline, 'brace_comment'),    # Start of { ... } multiline comments
+            (r'[.*]+', Comment.Multiline),       # Content within the comment
+        ],
+
+        'magicfuncs': [
+            (words(('__init__','__repr__', '__del__',
+                '__add__',
+                '__sub__',
+                '__mul__',
+                '__div__',
+                '__mod__',
+                '__eq__',
+                '__ne__',
+                '__lt__',
+                '__le__',
+                '__gt__',
+                '__ge__',
+                '__invert__',
+                '__and__',
+                '__or__',
+                '__xor__',), suffix=r'\b'),
+             Name.Function.Magic),
+        ],
     }
