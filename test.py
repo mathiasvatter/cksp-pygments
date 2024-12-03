@@ -23,7 +23,8 @@ on init
     test($x)
     message(EVENT_NOTE, 3, 5, ALL_EVENTS[0])
 end on
-
+{*************
+*****}
 function test(x: int, y: int)
     if (x > 10 and y < 20)
         return true
