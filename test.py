@@ -39,7 +39,7 @@ on init
     sli_test -> hide := HIDE_WHOLE_CONTROL
     declare x: int, y: int := 42
     declare str: string := "Hello, 'other string' World!"
-    call test($x)
+    call test
     message(EVENT_NOTE, 3, 5, ALL_EVENTS[0])
 end on
 

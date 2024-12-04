@@ -120,8 +120,8 @@ class CKSPLexer(RegexLexer):
             (r'\bend\s+on\b', Keyword),
 
             # Function Call
-            (r'\b(call)(\s+)('+var_name+r')(\()', bygroups(Keyword.Declaration, Text, Name.Function, Text)),
-            (r'\b('+var_name+r')(\()', bygroups(Name.Function, Text)),  # Ohne "call"
+            (r'\b(call)(\s+)('+var_name+r')(?:(\()?)', bygroups(Keyword.Declaration, Text, Name.Function, Punctuation)),
+            (r'\b('+var_name+r')(\()', bygroups(Name.Function, Punctuation)),  # Ohne "call"
 
             # Defines
             (r'\b(define)(\s+)', bygroups(Keyword.Declaration, Text), 'macroname'),
