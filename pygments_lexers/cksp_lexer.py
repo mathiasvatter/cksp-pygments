@@ -139,7 +139,7 @@ class CKSPLexer(RegexLexer):
             (r'\b(end\s+struct)', Keyword.Declaration),
 
             # Const
-            (r'\b(const)(\s+)', bygroups(Keyword.Declaration, Text), 'structname'),
+            (r'\b(^const)(\s+)', bygroups(Keyword.Declaration, Text), 'structname'),
             (r'\b(end\s+const)', Keyword.Declaration),
 
             # Family
@@ -157,7 +157,7 @@ class CKSPLexer(RegexLexer):
             (r'(:\s*)('+var_name+r')', bygroups(Text, Keyword.Type)),
 
             # Variable declarations
-            (r'\b(declare|delete|local|global|pers|instpers|const|polyphonic)\b', Keyword.Declaration),
+            (r'\b(declare|delete|local|global|pers|instpers|read|const|polyphonic)\b', Keyword.Declaration),
 
             # Variable References
             (var_name, Name.Variable),

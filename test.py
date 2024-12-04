@@ -35,6 +35,7 @@ end struct
 define GLOBAL_VAR(x) := 42 + x
 
 on init
+    declare read var1, pers var2, instpers var3, const NUM_VARS := 1, 0.69, "var3", 3
     declare ui_slider sli_test(0,1000)
     sli_test -> hide := HIDE_WHOLE_CONTROL
     declare x: int, y: int := 42
