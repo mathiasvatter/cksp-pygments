@@ -44,6 +44,12 @@ class CKSPLexer(RegexLexer):
                 var = line.strip()
                 if(var[0] in types):
                     var = var[1:]
+
+                # add shorthand vars (control_par_* -> *), 
+                if(var.startswith('CONTROL_PAR_')):
+                    short_var = var[12:]
+                    vars.append(short_var) # add upper case version
+                    vars.append(short_var.lower()) # add lower case version
             
                 vars.append(var)
         return vars
@@ -114,7 +120,7 @@ class CKSPLexer(RegexLexer):
             (r'\bend\s+on\b', Keyword),
 
             # Function Call
-            (r'\b(call)\s+('+var_name+r')(\()', bygroups(Keyword.Declaration, Name.Function, Text)),
+            (r'\b(call)(\s+)('+var_name+r')(\()', bygroups(Keyword.Declaration, Text, Name.Function, Text)),
             (r'\b('+var_name+r')(\()', bygroups(Name.Function, Text)),  # Ohne "call"
 
             # Defines

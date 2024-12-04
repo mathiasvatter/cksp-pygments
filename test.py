@@ -36,9 +36,10 @@ define GLOBAL_VAR(x) := 42 + x
 
 on init
     declare ui_slider sli_test(0,1000)
+    sli_test -> hide := HIDE_WHOLE_CONTROL
     declare x: int, y: int := 42
     declare str: string := "Hello, 'other string' World!"
-    test($x)
+    call test($x)
     message(EVENT_NOTE, 3, 5, ALL_EVENTS[0])
 end on
 
