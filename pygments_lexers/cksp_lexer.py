@@ -93,7 +93,7 @@ class CKSPLexer(RegexLexer):
             # Strings
             (r'"(\\\\|\\"|[^"])*"', String.Double),
             (r"'(\\\\|\\'|[^'])*'", String.Single),
-
+            
             # Keywords
             (r'\b(continue|break|return|for|in|to|steps|end\s+for|if|else|end\s+if|'
              r'select|case|end\s+select|while|end\s+while)\b', Keyword.Constant),
@@ -138,6 +138,15 @@ class CKSPLexer(RegexLexer):
             (r'\b(struct)(\s+)', bygroups(Keyword.Declaration, Text), 'structname'),
             (r'\b(end\s+struct)', Keyword.Declaration),
 
+            # Const
+            (r'\b(const)(\s+)', bygroups(Keyword.Declaration, Text), 'structname'),
+            (r'\b(end\s+const)', Keyword.Declaration),
+
+            # Family
+            (r'\b(family)(\s+)', bygroups(Keyword.Declaration, Text), 'structname'),
+            (r'\b(end\s+family)', Keyword.Declaration),
+
+            # self.
             (r'(self)(?:(.)?)\b', bygroups(Name.Builtin.Pseudo, Text)),
             
             # Type
