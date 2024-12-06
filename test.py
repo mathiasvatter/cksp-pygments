@@ -35,6 +35,7 @@ end struct
 define GLOBAL_VAR(x) := 42 + x
 
 on init
+    sli_test -> hide := HIDE_WHOLE_CONTROL
     declare read var1, pers var2, instpers var3, const NUM_VARS := 1, 0.69, "var3", 3
     declare ui_slider sli_test(0,1000)
     sli_test -> hide := HIDE_WHOLE_CONTROL
@@ -53,7 +54,7 @@ on ui_control(sli_test)
 end on
 
 function test(x: int, y: int)
-    if (x > 10 and y < 20)
+    if ($x > 10 and y < 20)
         return true
     else
         message("Hello, World")
