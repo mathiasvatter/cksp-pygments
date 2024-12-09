@@ -99,7 +99,7 @@ class CKSPLexer(RegexLexer):
             (r"'(\\\\|\\'|[^'])*'", String.Single),
             
             # Keywords
-            (r'\b(continue|break|return|for|in|to|steps|end\s+for|if|else|end\s+if|'
+            (r'\b(continue|break|return|for|in|to|downto|step|end\s+for|if|else|end\s+if|'
              r'select|case|end\s+select|while|end\s+while)\b', Keyword.Constant),
 
             # Import
