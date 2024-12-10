@@ -113,6 +113,7 @@ class CKSPLexer(RegexLexer):
             (r'\b(\#pragma)\b', Keyword.Preproc, 'preproc_builtins'),  
 
             (r'(->)(\s*)', bygroups(Operator, Whitespace), 'shorthands'),
+            include('cksp_builtins'),
             include('builtins'),
             include('widgets'),
 
@@ -195,6 +196,10 @@ class CKSPLexer(RegexLexer):
             (words(('async_complete', 'controller', 'init', 'listener', 'note', 'persistence_changed',
             'pgs_changed', 'poly_at', 'release', 'rpn', 'nrpn', 'ui_control', 'ui_update', 'midi_in'),
             suffix=r'\b'), Keyword.Callback, '#pop'),
+        ],
+
+        'cksp_builtins': [
+            (words(('use_count', 'num_elements', 'pairs', 'search', 'sort'), suffix=r'\b'), Name.Builtin),
         ],
 
         'builtins': [
