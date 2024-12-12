@@ -199,7 +199,7 @@ class CKSPLexer(RegexLexer):
         ],
 
         'cksp_builtins': [
-            (words(('use_count', 'num_elements', 'pairs', 'search', 'sort'), suffix=r'\b'), Name.Builtin),
+            (words(('use_count', 'num_elements', 'range', 'pairs', 'search', 'sort'), suffix=r'\b'), Name.Builtin),
         ],
 
         'builtins': [
