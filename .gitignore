@@ -53,6 +53,7 @@ venv/
 dist/
 *.egg-info/
 __pycache__/
-*.pyc
+*.piece
+build/
 *.pyo
 

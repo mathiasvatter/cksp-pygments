@@ -62,6 +62,36 @@ function test(x: int, y: int)
     end if
 end function
 
+namespace UI
+	declare const HEIGHT := 100
+	declare const WIDTH := 500
+
+	function set_bg_frame(frame: int)
+		set_skin_offset(frame * HEIGHT)
+	end function
+
+	namespace Layout
+		function content_height(): int
+            return HEIGHT-68        // unqualified access to outer member
+        end function
+	end namespace
+
+    namespace Fonts
+
+		declare types: int[] := [CONTROL_PAR_FONT_TYPE, CONTROL_PAR_FONT_TYPE_ON, CONTROL_PAR_FONT_TYPE_OFF_PRESSED, CONTROL_PAR_FONT_TYPE_ON_PRESSED, CONTROL_PAR_FONT_TYPE_OFF_HOVER, CONTROL_PAR_FONT_TYPE_ON_HOVER]
+
+		function apply(ref ui_control, font_array: int[])
+			for u in range(num_elements(types))
+				ui_control -> types[u] :=  font_array[u]
+			end for
+		end function
+	   
+	end namespace
+
+    message(f"This is a UI with height <HEIGHT> and width <WIDTH>")
+    
+end namespace
+
 
 """
 
