@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='pygments-cksp',
-    version='0.1',
+    version='0.7',
     packages=['pygments_lexers'],
     entry_points={
         'pygments.lexers': [
