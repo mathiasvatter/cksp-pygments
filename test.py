@@ -63,8 +63,8 @@ function test(x: int, y: int)
 end function
 
 namespace UI
-	declare const HEIGHT := 100
-	declare const WIDTH := 500
+	declare const HEIGHT := 100e10
+	declare const WIDTH := 0.1e-10
 
 	function set_bg_frame(frame: int)
 		set_skin_offset(frame * HEIGHT)

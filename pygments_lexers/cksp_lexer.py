@@ -182,7 +182,10 @@ class CKSPLexer(RegexLexer):
 
 		'expr': [
 			# numbers
+			(r'(?i)0b[01]+', Number.Bin),
 			(r'\b0x[0-9a-fA-F]+\b', Number.Hex),
+			(r'(?i)[+-]?[0-9]+\.[0-9]+(e[+-]?[0-9]+)?j?', Number.Float),
+            (r'(?i)[+-]?[0-9]+e[+-]?\d+j?', Number.Float),
 			(r'\b\d+\.\d+\b', Number.Float),
 			(r'\b\d+\b', Number.Integer),
 
