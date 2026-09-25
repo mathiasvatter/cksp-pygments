@@ -2,8 +2,9 @@ from setuptools import setup
 
 setup(
     name='pygments-cksp',
-    version='0.7',
+    version='0.8',
     packages=['pygments_lexers'],
+    package_data={'pygments_lexers': ['cksp_builtins/*.txt']},
     entry_points={
         'pygments.lexers': [
             'cksp = pygments_lexers.cksp_lexer:CKSPLexer',

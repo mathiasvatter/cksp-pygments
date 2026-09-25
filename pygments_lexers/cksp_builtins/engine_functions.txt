@@ -7,12 +7,19 @@ set_level_meter_properties(level_meter: int, bg_color: int, off_color: int, on_c
 set_menu_properties(menu: int, picture: string, font_type: int, text_alignment: int, textpos_y: int)
 set_slider_properties(slider: int, default_value: int, picture: string, mouse_behaviour: int)
 set_switch_properties(switch: int, text: any, picture: string, text_alignment: int, font_type: int, textpos_y: int)
-set_table_properties(table: int[], bar_color: int, zero_line_color: int)
+set_table_properties(table: any, bar_color: int, zero_line_color: int)
 set_text_edit_properties(textedit: int, text: any, picture: string, text_alignment: int, font_type: int, textpos_y: int)
 set_value_edit_properties(value_edit: int, text: any, font_type: int, textpos_y: int, show_arrows: int)
 set_waveform_properties(waveform: int, bar_color: int, zero_line_color: int, bg_color: int, bg_alpha: int, wave_color: int, wave_cursor_color: int, slicemarkers_color: int, wf_vis_mode: int)
 set_wavetable2d_properties(wavetable: int, wt_zone: int, bg_color: int, bg_alpha: int, wave_color: int, wave_alpha: int, wave_end_color: int, wave_end_alpha: int)
 set_wavetable3d_properties(wavetable: int, wt_zone: int, bg_color: int, bg_alpha: int, wt_color: int, wt_alpha: int, wt_end_color: int, wt_end_alpha: int, parallax_x: int, parallax_y: int)
+
+// typecasting
+bool(value: any): any
+int(value: any): int
+real(value: any): real
+real_to_int(value: real): int
+int_to_real(value: int): real
 
 // builtin functions
 END_USE_CODE
@@ -71,6 +78,8 @@ detect_loudness(zone_id: int, return_var: int): int
 detect_sample_type(zone_id: int, return_var: int): int
 detect_instrument_type(zone_id: int, return_var: int): int
 detect_drum_type(zone_id: int, return_var: int): int
+detect_key(zone_id: int, key_result: int): int
+detect_tempo(zone_id: int, tempo_result: int): int
 disable_logging(log_type: int)
 disallow_group(group_idx: int)
 dont_use_machine_mode(event_id: int)
@@ -79,7 +88,9 @@ exit
 exp(value: real): real
 exp2(value: real): real
 fade_in(event_id: int, fade_time: int)
+fade_in(event_id: int, fade_time: int, curve: int)
 fade_out(event_id: int, fade_time: int, stop_voice: int)
+fade_out(event_id: int, fade_time: int, stop_voice: int, curve: int)
 
 // deprecated
 find_group(group_name: string): int
@@ -98,6 +109,7 @@ get_control_par_str_arr(ui_id: int, control_par: int, index: int): string
 get_engine_par(parameter: int, group: int, slot: int, generic: int): int
 get_engine_par_disp(paramter: int, group: int, slot: int, generic: int): string
 get_engine_par_disp_m(parameter: int, group: int, slot: int, generic: int): string
+get_engine_par_disp_ext(parameter: int, value: int, group: int, slot: int, generic: int): string
 get_engine_par_m(parameter: int, group: int, slot: int, generic: int): int
 get_event_ids(array: int[])
 get_event_mark(event_id: int, bitmark: int): int
@@ -139,8 +151,6 @@ ignore_midi
 import_nckp(filepath: string): string
 in_range(value: number, value: number, value: number): bool
 inc(variable: int)
-int(value: real): int
-int_to_real(value: int): real
 is_zone_empty(zone_id: int): int
 load_array(array: any[], int): int
 load_array_str(array: any[], path: string): int
@@ -156,6 +166,7 @@ log10(value: real): real
 lsb(value: int): int
 make_instr_persistent(variable: any)
 make_perfview
+expose_controls
 make_persistent(variable: any)
 message(value: any)
 mf_copy_export_area(zone_id: int)
@@ -189,7 +200,7 @@ mf_set_byte_two(value: any)
 mf_set_channel(value: any)
 mf_set_command(command: any)
 mf_set_event_par(event_id: int, parameter: int, value: int)
-mf_set_export_area(name: any, startpos: int, endpos: int, start_track: int, end_track: int)
+mf_set_export_area(name: any, startpos: int, endpos: int, start_track: int, end_track: int): int
 mf_set_note_length(value: any)
 mf_set_num_export_areas(value: any)
 mf_set_length(value: any)
@@ -200,6 +211,7 @@ move_control_px(variable: any, x_pos_px: int, y_pos_px: int)
 ms_to_ticks(microseconds: int): int
 msb(value: int): int
 note_off(event_id: int)
+note_off(event_id: int, time_offset: int)
 num_elements(array_variable: any[]): int
 num_slices(group_idx: int): int
 num_slices_zone(zone_id: int): int
@@ -217,8 +229,6 @@ pow(value: real, value: real): real
 purge_group(group_idx: int, mode: int): int
 random(min: int, max: int): int
 read_persistent_var(variable: any)
-real(value: int): real
-real_to_int(value: real): int
 redirect_midi(event_id: int, instr_slot_idx: int, instr_bank_slot_idx: int)
 redirect_output(event_id: int, output_type: int, output_idx: int)
 remove_keyrange(key_number: int)
@@ -237,7 +247,9 @@ set_control_par_arr(ui_id: any, control_parameter: int, value: int, index: int)
 set_control_par_real_arr(ui_id: any, control_parameter: int, value: real, index: int)
 set_control_par_str(ui_id: any, control_parameter: int, text: any)
 set_control_par_str_arr(ui_id: any, control_parameter: int, value: any, index: int)
-set_controller(cc_num: int, value: int)
+set_controller(controller: int, value: int)
+set_note_controller(controller: int, note_number: int, value: int)
+set_poly_at(note_numer: int, value: int)
 set_engine_par(parameter: int, value: int, group: int, slot: int, generic: int): int
 set_engine_par_m(parameter: int, value: int, group: int, slot: int, generic: int): int
 set_event_mark(event_id: int, bitmark: int)
@@ -305,10 +317,6 @@ zone_slice_idx_loop_start(zone_id: int, loop_idx: int): int
 zone_slice_length(zone_id: int, slice_idx: int): int
 zone_slice_loop_count(zone_id: int, loop_idx: int): int
 zone_slice_start(zone_id: int, slice_idx: int): int
-int_to_real(value: int): real
-real(value: int): real
-real_to_int(value: real): int
-int(value: real): int
 continue
 
 // nks 2 builtin functions
